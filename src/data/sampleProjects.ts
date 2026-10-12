@@ -513,182 +513,205 @@ Référence projet : ORG-KRAS-101 | Enregistrement prévisionnel : ClinicalTrial
     },
   },
   {
-    id: 'pack-cdp-paris-vibe',
-    name: 'PBNC CDP Paris : Supabase, Vibe Coding & Sécurisation Agent IA',
-    category: 'Formation CDP & IA Prod',
-    description: 'Dossier de projet basé sur les sessions de formation (Loom 28/07/2026, Leexi meeting share et enregistrement Drive Supabase & Vibe Coding).',
+    id: 'pack-digital-ia',
+    name: 'Déploiement Plateforme Métier & Automatisation IA',
+    category: 'Transformation Digitale & IA',
+    description: 'Modernisation des flux métiers, intégration d’automatisations sécurisées, orchestration d’agents IA et gouvernance des données pour un déploiement d’entreprise.',
     documents: [
       {
-        id: 'doc-loom-sec',
-        name: 'Loom_Securiser_Agent_IA_Production.md',
+        id: 'doc-sec-arch',
+        name: 'Cadrage_Architecture_et_Securite_Agents_IA.md',
         type: 'specs',
-        fileFormat: 'Loom Vidéo',
-        size: '11.4 Ko',
-        dateAdded: '2026-07-28',
+        fileFormat: 'Markdown',
+        size: '11.8 Ko',
+        dateAdded: '2026-10-05',
         active: true,
-        tags: ['Loom', 'Sécurité', 'Agents IA', 'Production'],
-        content: `# TRANSCRIPTION & SYNTHÈSE LOOM : Sécuriser ton Agent IA en Production
-Date : 28 Juillet 2026
-Lien source : https://www.loom.com/share/101fda9877b64135ad5a3c276e4e4e4b
+        tags: ['Architecture', 'Sécurité', 'Agents IA', 'Production'],
+        content: `# SPÉCIFICATIONS TECHNIQUES : Architecture & Sécurisation des Systèmes IA en Entreprise
+Date : Octobre 2026
+Projet : Déploiement Plateforme Métier & Automatisation IA
 
-## 1. Contexte & Enjeux
-La mise en production d'agents autonomes et de LLM en entreprise pose des défis de sécurité critiques : fuite de clés API, injection de prompts malveillants, coûts non plafonnés et accès non autorisés aux bases de données.
+## 1. Contexte & Objectifs
+La mise en production d'agents autonomes et de modèles de fondation en entreprise exige une posture de sécurité stricte : zéro fuite de données d'entreprise, protection contre les injections de prompts malveillants, gouvernance budgétaire et traçabilité complète des décisions.
 
 ## 2. Piliers d'Architecture Sécurisée
 1. **Zéro Clé Côté Client (Server-Side Proxy)** :
-   - Les clés API (Gemini, Supabase service_role, etc.) ne doivent JAMAIS apparaître dans le code frontend ou le bundle Vite.
-   - Toutes les requêtes vers les LLM transitent par des routes backend dédiées (/api/*).
+   - Les clés API (Gemini, secrets d'infrastructure) ne transitent JAMAIS dans le code frontend ou le bundle client.
+   - Toutes les requêtes vers les LLM transitent par des routes backend dédiées (/api/*) avec validation d'authentification.
 
 2. **Défense en Profondeur contre le Prompt Injection** :
-   - Séparation stricte entre les System Instructions (inviolables) et le contenu fourni par les utilisateurs.
-   - Validation des entrées et guardrails sur les sorties générées.
+   - Séparation stricte et inviolable entre les System Instructions et le contenu fourni par les utilisateurs ou les tiers.
+   - Guardrails sémantiques sur les entrées et sorties générées.
 
 3. **Gouvernance des Données & Contrôle d'Accès (RBAC / RLS)** :
-   - Isolation des données sensibles (PII).
-   - Règles d'autorisation au niveau ligne (Row-Level Security sur PostgreSQL/Supabase ou Firestore rules).
+   - Isolation des données sensibles et conformité stricte RGPD.
+   - Règles d'autorisation au niveau ligne (Row-Level Security sur PostgreSQL ou Firestore security rules).
 
 4. **Gestion des Risques Budgétaires (Denial of Wallet)** :
-   - Plafonnement des tokens en sortie (maxOutputTokens).
-   - Rate limiting par adresse IP et par utilisateur authentifié.`,
+   - Plafonnement systématique des tokens en sortie (maxOutputTokens).
+   - Rate limiting par utilisateur et journalisation analytique des coûts d'inférence.`,
       },
       {
-        id: 'doc-drive-vibe',
-        name: 'Drive_PBNC_Supabase_Vibe_Coding_Theorie.md',
+        id: 'doc-cad-orga',
+        name: 'Note_Strategique_Gouvernance_et_Deploiement.md',
         type: 'note_cadrage',
-        fileFormat: 'Google Drive',
-        size: '14.8 Ko',
-        dateAdded: '2026-08-18',
+        fileFormat: 'Markdown',
+        size: '13.5 Ko',
+        dateAdded: '2026-10-08',
         active: true,
-        tags: ['Google Drive', 'Supabase', 'Vibe Coding', 'CDP Paris'],
-        content: `# SUPPORT GOOGLE DRIVE : PBNC.26-06.CDP.Paris — Supabase & Vibe Coding (Théorie)
-Date de la session : 18 Août 2026
-Lien source : https://drive.usercontent.google.com/download?id=1XlEPXrfaWg_DuP6WmMnS1dkqUlHNe2qo&export=download
+        tags: ['Cadrage', 'Gouvernance', 'Méthodologie', 'Delivery'],
+        content: `# NOTE DE CADRAGE STRATÉGIQUE : Gouvernance & Déploiement Accéléré
+Date : Octobre 2026
 
-## 1. Qu'est-ce que le "Vibe Coding" pour un Chef de Projet ?
-Le Vibe Coding désigne l'art de concevoir, prototyper et itérer sur des applications logicielles complètes en guidant des agents d'intelligence artificielle par le langage naturel.
-Le rôle du Chef de Projet devient encore plus central :
-- Rédiger des spécifications et des personas sans ambiguïté.
-- Piloter l'architecture globale pour éviter la dette technique et le code spaghetti.
-- Vérifier la conformité réglementaire (RGPD, audit de sécurité).
+## 1. Méthodologie de Pilotage Hybride (Agile & Design Thinking)
+Le pilotage de projets intégrant l'IA nécessite une boucle itérative courte "Construire → Mesurer → Apprendre" :
+- Cadrage précis des besoins réels des équipes opérationnelles (analyse des irritants terrain, ateliers métiers).
+- Prototypage rapide d'un Minimum Viable Product (MVP) pour valider l'adoption avant l'industrialisation.
+- Alignement continu entre vision produit, faisabilité technique et viabilité économique.
 
-## 2. Socle Backend : Supabase & PostgreSQL
-- Supabase fournit une base PostgreSQL managée avec authentification, temps réel et Row Level Security (RLS).
-- Avantage pour le chef de projet : Schémas relationnels stricts (Drizzle ORM / SQL), migrations versionnées et typage TypeScript bout en bout.
+## 2. Rôle du Chef de Projet & Product Owner
+- Rédiger des spécifications fonctionnelles sans ambiguïté et un backlog MoSCoW clair.
+- Piloter la matrice des risques 5x5 et anticiper les dépendances inter-équipes.
+- Assurer la communication et la restitution auprès du comité de pilotage (COPIL) et des parties prenantes.
 
-## 3. Plan d'Action & Livrables Attendus
-- Cadrer l'application avec un WBS et des critères d'acceptation précis.
-- Structurer les composants front-end et back-end de manière modulaire.
-- Intégrer les tests et la vérification automatisée (lint, compilation).`,
+## 3. Plan d'Action & Facteurs Clés de Succès
+- Valider le cadrage initial et les critères d'acceptation à chaque étape de validation.
+- Structurer les composants de manière modulaire pour faciliter la maintenance.
+- Mesurer l'impact métier réel : gains de temps opérationnels, qualité des livrables et satisfaction des utilisateurs.`,
       },
       {
-        id: 'doc-leexi-cr',
-        name: 'Leexi_Synthese_Reunion_Decisions_CDP.md',
+        id: 'doc-copil-cr',
+        name: 'Releve_Decisions_COPIL_Lancement.md',
         type: 'cr_reunion',
-        fileFormat: 'Leexi Meeting',
-        size: '8.6 Ko',
-        dateAdded: '2026-08-20',
+        fileFormat: 'Markdown',
+        size: '8.9 Ko',
+        dateAdded: '2026-10-10',
         active: true,
-        tags: ['Leexi', 'Compte-rendu', 'Plan d’actions', 'COPIL'],
-        content: `# COMPTE-RENDU LEEXI AI : Synchronisation Équipe & Évaluation CDP
-Lien source : https://app.leexi.ai/fr/share/df80da18-294b-4856-bff0-9b6db3f2d6fb
+        tags: ['COPIL', 'Compte-rendu', 'Relevé de décisions', 'Parties Prenantes'],
+        content: `# RELEVÉ DE DÉCISIONS : Comité de Pilotage (COPIL) de Lancement
+Date : 10 Octobre 2026
+Participants : Sponsor Projet, Direction Métier, Lead Architecte, Chef de Projet
 
-## 1. Objectifs de la Réunion
-Revue d'avancement des projets d'agents IA développés par la promotion PBNC.26-06.CDP.Paris.
+## 1. Ordre du Jour
+1. Validation du cadrage budgétaire et du périmètre initial (In/Out Scope).
+2. Présentation de la matrice des risques prioritaires et des plans de contingence.
+3. Calendrier prévisionnel et jalons de validation.
 
-## 2. Relevé de Décisions
-1. Les projets doivent intégrer une interface de pilotage complète : Tableau de bord, matrice des risques, planning jalons et matrice RACI.
-2. Tout déploiement doit respecter les consignes de sécurité présentées dans le Loom du 28/07 (clés cachées côté serveur, authentification vérifiée).
-3. L'intégration de données documentaires (Drive, transcriptions, briefs) doit être native dans l'agent.
+## 2. Décisions Validées
+1. **Périmètre MVP** : Validation ferme des cas d'usage prioritaires d'automatisation métier et de l'assistant interactif.
+2. **Gouvernance & Sécurité** : Déploiement conforme à la politique de sécurité zéro-trust validée par le Lead Architecte.
+3. **Rythme de Synchronisation** : Émission hebdomadaire d'un Flash Report d'avancement et réunion bi-mensuelle du COPIL.
 
-## 3. Calendrier & Échéances :
-- Jalon 1 : Finalisation de la matrice des risques et du WBS.
-- Jalon 2 : Intégration de l'agent chatbot multi-rôles avec Search Grounding.
-- Jalon 3 : Démonstration finale et mise en production.`,
+## 3. Prochains Jalons Clés
+- Jalon 1 : Finalisation de la matrice des risques et validation du Delivery Workflow.
+- Jalon 2 : Livraison de la première version pilote pour un panel d'utilisateurs clés.
+- Jalon 3 : Restitution des résultats et décision de passage à l'échelle (Go / No-Go).`,
       },
     ],
     prebuiltAudit: {
-      projectTitle: 'CDP Paris : Supabase, Vibe Coding & Sécurisation des Agents IA',
-      executiveSummary: 'Projet de déploiement et de formation Chef de Projet alliant la méthodologie Vibe Coding (prototypage assisté par IA), un socle de données sécurisé et les bonnes pratiques de mise en production (Loom 28/07 & Leexi).',
+      projectTitle: 'Déploiement Plateforme Métier & Automatisation IA',
+      executiveSummary: 'Projet stratégique de modernisation des processus métiers déployant une architecture d’automatisation et d’assistance IA hautement sécurisée, conçue pour fluidifier les flux opérationnels et générer des gains de productivité mesurables pour les équipes.',
       projectStatus: 'VERT',
-      statusJustification: 'Documents et enregistrements pédagogiques clairs, architecture cible bien délimitée, règles de sécurité zéro-trust définies.',
-      estimatedDuration: '4 semaines',
+      statusJustification: 'Cadrage fonctionnel validé par les parties prenantes, architecture de sécurité zéro-trust opérationnelle, calendrier et budget alignés.',
+      estimatedDuration: '3 mois',
       keyObjectives: [
-        'Maîtrise du cycle Vibe Coding pour les Chefs de Projet',
-        'Sécurisation à 100% des clés API et de l’authentification',
-        'Gouvernance des données avec RLS / Firestore security rules',
-        'Création d’un Agent Skill opérationnel en production',
+        'Déployer la plateforme d’automatisation et les assistants IA en production',
+        'Garantir une sécurité maximale (Zéro fuite d’API, architecture proxy sécurisée)',
+        'Réduire les délais de traitement des flux opérationnels de 45%',
+        'Assurer la traçabilité complète et la conformité RGPD',
       ],
       scope: {
         inScope: [
-          'Agent Skill Chef de Projet avec matrice des risques 5x5',
-          'Intégration des transcriptions et enregistrements Loom / Drive / Leexi',
-          'Chatbot multi-rôles avec Google Search Grounding',
-          'Persistance sécurisée des dossiers et des documents',
+          'Tableau de bord de pilotage exécutif avec métriques clés et export PDF',
+          'Matrice interactive des risques 5x5 avec plan d’atténuation',
+          'Suivi des jalons du planning et matrice de gouvernance RACI',
+          'Assistant co-pilot conversationnel connecté aux documents de référence',
         ],
         outOfScope: [
-          'Hébergement on-premise sur serveurs physiques internes',
-          'Développement d’une application mobile native iOS',
+          'Hébergement on-premise sur infrastructure physique legacy',
+          'Développement d’applications natives spécifiques hors périmètre web',
         ],
       },
       topRisks: [
         {
-          id: 'CDP-R1',
-          title: 'Fuite accidentelle de clés d’API dans le bundle client',
+          id: 'RISK-01',
+          title: 'Compromission ou fuite de clés d’API sensibles',
           category: 'Technique',
           probability: 2,
           impact: 5,
           score: 10,
-          mitigation: 'Audit strict du code : interdiction de variables privées dans le frontend, utilisation exclusive de routes Express /api/*',
+          mitigation: 'Proxy backend strict via /api/*, stockage des secrets dans les variables d’environnement serveur et interdiction formelle de clés côté client.',
           owner: 'Lead Architecte',
           status: 'Sous contrôle',
         },
         {
-          id: 'CDP-R2',
-          title: 'Dérive de périmètre (Scope Creep) lors des sessions Vibe Coding',
+          id: 'RISK-02',
+          title: 'Dérive de périmètre (Scope Creep) lors des phases de développement',
           category: 'Gouvernance',
           probability: 3,
           impact: 4,
           score: 12,
-          mitigation: 'Cadrage amont avec cahier des charges figé et validation systématique de chaque itération.',
+          mitigation: 'Processus d’arbitrage formel au COPIL hebdomadaire, validation systématique des évolutions et priorisation stricte du backlog.',
           owner: 'Chef de Projet',
+          status: 'Sous contrôle',
+        },
+        {
+          id: 'RISK-03',
+          title: 'Résistance des utilisateurs finaux à l’adoption des nouveaux outils',
+          category: 'Humain',
+          probability: 2,
+          impact: 4,
+          score: 8,
+          mitigation: 'Impliquer les ambassadeurs métiers dès la phase pilote, plan de conduite du changement et sessions pratiques.',
+          owner: 'Product Owner',
           status: 'Sous contrôle',
         },
       ],
       criticalMilestones: [
         {
-          id: 'CDP-M1',
-          title: 'Cadrage & Synthèse des Enregistrements (Loom/Drive/Leexi)',
+          id: 'M1',
+          title: 'Cadrage Stratégique & Spécifications de Sécurité',
           phase: 'Cadrage',
-          targetDate: '25 Août 2026',
-          deliverables: 'Notes de cadrage & transcription des 3 sources',
+          targetDate: '15 Octobre 2026',
+          deliverables: 'Cahier des charges validé, architecture cible et charte projet',
           status: 'Valide',
           progress: 100,
         },
         {
-          id: 'CDP-M2',
-          title: 'Intégration du Chatbot Multi-Rôles & Search Grounding',
+          id: 'M2',
+          title: 'Développement de la Plateforme & Connecteurs Métiers',
           phase: 'Développement',
-          targetDate: '10 Septembre 2026',
-          deliverables: 'Chatbot multi-turn avec rôles PMP, R&D et Architecte',
-          status: 'Valide',
-          progress: 100,
+          targetDate: '15 Novembre 2026',
+          deliverables: 'Workflows d’automatisation, interface de pilotage et connecteurs API',
+          status: 'En cours',
+          progress: 75,
         },
         {
-          id: 'CDP-M3',
-          title: 'Validation de Sécurité & Mise en Production',
+          id: 'M3',
+          title: 'Recette Fonctionnelle & Pilote Utilisateurs',
+          phase: 'Recette',
+          targetDate: '10 Décembre 2026',
+          deliverables: 'Cahier de recette validé, retours d’expérience et ajustements',
+          status: 'A venir',
+          progress: 15,
+        },
+        {
+          id: 'M4',
+          title: 'Déploiement Général & Restitution COPIL',
           phase: 'Déploiement',
-          targetDate: '30 Septembre 2026',
-          deliverables: 'Audit de sécurité validé et démo COPIL',
-          status: 'En cours',
-          progress: 90,
+          targetDate: '20 Janvier 2027',
+          deliverables: 'Mise en production, rapport exécutif final et transfert de compétences',
+          status: 'A venir',
+          progress: 0,
         },
       ],
       recommendations: [
-        'Utiliser le Flash Report hebdomadaire pour suivre l’avancement des projets d’agents IA.',
-        'Activer Google Search Grounding pour vérifier les dernières failles ou correctifs de sécurité des modèles Gemini.',
+        'Maintenir un rythme hebdomadaire de diffusion du Flash Report aux parties prenantes.',
+        'Auditer régulièrement les temps de réponse et la pertinence des résultats générés.',
+        'Consigner tous les arbitrages budgétaires et de planning dans le registre de décisions.',
       ],
       missingInformation: [
-        'Barème d’évaluation final de la certification CDP Paris',
+        'Volumétrie exacte des transactions quotidiennes attendue en phase de pic d’activité',
       ],
     },
   },

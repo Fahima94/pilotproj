@@ -17,6 +17,13 @@ import { MeetingRecorderModal } from './components/MeetingRecorderModal';
 import { ArtifactModal } from './components/ArtifactModal';
 import { UploadModal } from './components/UploadModal';
 import { SamplePacksModal } from './components/SamplePacksModal';
+import { ExportPdfModal } from './components/ExportPdfModal';
+import { ProjectControlCenterView } from './components/ProjectControlCenterView';
+import { SkillMarkdownBuilderView } from './components/SkillMarkdownBuilderView';
+import { TicketsManagerView, DEFAULT_TICKETS, ProjectTicket } from './components/TicketsManagerView';
+import { QaTestPlanView } from './components/QaTestPlanView';
+import { EvolutiveSpecificationsView } from './components/EvolutiveSpecificationsView';
+import { HorizonsDataVisualizerView } from './components/HorizonsDataVisualizerView';
 import { SAMPLE_PROJECT_PACKS, SampleProjectPack } from './data/sampleProjects';
 import { ProjectDocument, ProjectAudit, RiskItem, ChatMessage } from './types/project';
 
@@ -33,7 +40,7 @@ import {
 import { onAuthStateChanged, User as FirebaseUser } from 'firebase/auth';
 import { doc, setDoc, getDoc, collection, getDocs } from 'firebase/firestore';
 
-const INITIAL_PACK = SAMPLE_PROJECT_PACKS.find((p) => p.id === 'pack-cdp-paris-vibe') || SAMPLE_PROJECT_PACKS[0];
+const INITIAL_PACK = SAMPLE_PROJECT_PACKS.find((p) => p.id === 'pack-digital-ia') || SAMPLE_PROJECT_PACKS[0];
 
 export default function App() {
   const [currentUser, setCurrentUser] = useState<FirebaseUser | null>(null);
@@ -43,6 +50,7 @@ export default function App() {
   const [currentPackId, setCurrentPackId] = useState<string>(INITIAL_PACK.id);
   const [documents, setDocuments] = useState<ProjectDocument[]>(INITIAL_PACK.documents);
   const [audit, setAudit] = useState<ProjectAudit>(INITIAL_PACK.prebuiltAudit);
+  const [tickets, setTickets] = useState<ProjectTicket[]>(DEFAULT_TICKETS);
   const [activeTab, setActiveTab] = useState<string>('dashboard');
 
   // Multi-Turn Chat state
@@ -50,15 +58,15 @@ export default function App() {
     {
       id: 'msg-welcome',
       role: 'assistant',
-      content: `👋 **Bonjour ! Je suis votre Agent Skill Chef de Projet & R&D.**
+      content: `👋 **Bonjour ! Je suis votre Agent Skill Chef de Projet & Product Owner.**
 
-J'intègre les **Science Skills** (UniProt, AlphaFold, PubChem, ClinicalTrials.gov, PubMed) et la recherche **Google Search Grounding 🌐** en temps réel.
+Ce workspace est configuré pour piloter l'ensemble de **votre prochain projet d'entreprise** :
+- **Dossier actif :** "${INITIAL_PACK.prebuiltAudit.projectTitle}"
+- **Météo actuelle :** 🟢 ${INITIAL_PACK.prebuiltAudit.projectStatus} (${INITIAL_PACK.prebuiltAudit.statusJustification})
+- **Rôles spécialisés :** Chef de Projet PMP / Senior, Directeur Technique & Architecte, Product Owner & Delivery Lead, Directeur R&D Scientifique.
+- **Fonctionnalités prêtes à l'emploi :** Diagnostic et audit documentaire, Tour de Contrôle 360° (Sécu, RGPD, Finance, Comm, Data), Rédacteur de SKILL.md, Gestion au Ticket (INVEST), Matrice des Risques 5x5, Planning & Jalons, Gouvernance RACI, et **Export PDF complet** téléchargeable pour vos parties prenantes et votre COPIL.
 
-- **Dossier chargé :** "${INITIAL_PACK.prebuiltAudit.projectTitle}"
-- **Météo actuelle :** 🟡 ${INITIAL_PACK.prebuiltAudit.projectStatus} (${INITIAL_PACK.prebuiltAudit.statusJustification})
-- **Rôles disponibles :** Chef de Projet PMP 👑, Directeur R&D Scientifique 🔬, Lead Architecte 🛡️, Product Owner ⚡.
-
-Connectez-vous avec Google pour persister vos dossiers dans **Firebase Firestore**. Que souhaitez-vous analyser ?`,
+Importez vos documents (cahier des charges, comptes rendus, spécifications, transcriptions) pour personnaliser l'analyse en temps réel. Que souhaitez-vous analyser ?`,
       timestamp: new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }),
     },
   ]);
@@ -72,6 +80,7 @@ Connectez-vous avec Google pour persister vos dossiers dans **Firebase Firestore
   const [showUploadModal, setShowUploadModal] = useState<boolean>(false);
   const [showSampleModal, setShowSampleModal] = useState<boolean>(false);
   const [showMeetingRecorderModal, setShowMeetingRecorderModal] = useState<boolean>(false);
+  const [showExportPdfModal, setShowExportPdfModal] = useState<boolean>(false);
   const [activeArtifactType, setActiveArtifactType] = useState<
     'charter' | 'raci' | 'risks' | 'flash_report' | 'agile_backlog' | 'wbs' | null
   >(null);
@@ -189,6 +198,46 @@ Connectez-vous avec Google pour persister vos dossiers dans **Firebase Firestore
     }
   };
 
+  // Start fresh blank project for real enterprise use
+  const handleStartBlankProject = () => {
+    const blankId = `proj-${Date.now()}`;
+    setCurrentPackId(blankId);
+    setDocuments([]);
+    const blankAudit: ProjectAudit = {
+      projectTitle: 'Mon Nouveau Projet Entreprise',
+      executiveSummary: 'Espace de pilotage vierge prêt pour votre initiative d’entreprise. Importez vos documents de cadrage, spécifications techniques, comptes rendus et notes pour générer automatiquement l’audit et les livrables.',
+      projectStatus: 'VERT',
+      statusJustification: 'Projet nouvellement initialisé, en attente de vos documents réels.',
+      estimatedDuration: 'À définir',
+      keyObjectives: [
+        'Définir les objectifs SMART et le cadrage du projet',
+        'Cartographier les parties prenantes et la gouvernance RACI',
+        'Sécuriser l’architecture et établir le découpage au ticket INVEST'
+      ],
+      scope: {
+        inScope: ['Cadrage des besoins', 'Découpage du backlog en tickets'],
+        outOfScope: []
+      },
+      topRisks: [],
+      criticalMilestones: [],
+      recommendations: ['Importez votre premier document ou note de cadrage pour activer l’analyse IA.'],
+      missingInformation: ['Documents de cadrage initiaux']
+    };
+    setAudit(blankAudit);
+    setActiveTab('documents');
+    setMessages([
+      {
+        id: `msg-blank-${Date.now()}`,
+        role: 'assistant',
+        content: `🚀 **Espace projet vierge initialisé !**\n\nCet espace est 100% prêt pour **votre prochain projet professionnel**.\n\n👉 **Étape 1 :** Cliquez sur **Ajouter un document** (glisser-déposer de fichier ou copier-coller de texte) pour alimenter le dossier.\n👉 **Étape 2 :** Lancez l'audit pour obtenir la météo, la matrice des risques 5x5, les tickets INVEST et les spécifications SKILL.md.`,
+        timestamp: new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }),
+      }
+    ]);
+    if (currentUser) {
+      syncProjectToFirestore(blankAudit, []);
+    }
+  };
+
   // Toggle active document for context
   const handleToggleActiveDoc = (id: string) => {
     setDocuments((prev) =>
@@ -204,6 +253,15 @@ Connectez-vous avec Google pour persister vos dossiers dans **Firebase Firestore
   // Add document
   const handleAddDocument = (newDoc: ProjectDocument) => {
     const updated = [newDoc, ...documents];
+    setDocuments(updated);
+    if (currentUser) {
+      syncProjectToFirestore(audit, updated);
+    }
+  };
+
+  // Update existing document
+  const handleUpdateDocument = (updatedDoc: ProjectDocument) => {
+    const updated = documents.map((d) => (d.id === updatedDoc.id ? updatedDoc : d));
     setDocuments(updated);
     if (currentUser) {
       syncProjectToFirestore(audit, updated);
@@ -374,6 +432,7 @@ Connectez-vous avec Google pour persister vos dossiers dans **Firebase Firestore
         onLogout={handleLogout}
         isLoggingIn={isLoggingIn}
         isSavingFirestore={isSavingFirestore}
+        onOpenExportPdf={() => setShowExportPdfModal(true)}
       />
 
       {/* Main Content Area */}
@@ -385,6 +444,62 @@ Connectez-vous avec Google pour persister vos dossiers dans **Firebase Firestore
             onNavigateTab={setActiveTab}
             onOpenArtifact={(type) => setActiveArtifactType(type)}
             onAskAgent={handleAskAgent}
+            onOpenExportPdf={() => setShowExportPdfModal(true)}
+          />
+        )}
+
+        {activeTab === 'control' && (
+          <ProjectControlCenterView
+            audit={audit}
+            documents={documents}
+            onOpenExportPdf={() => setShowExportPdfModal(true)}
+            onNavigateTab={setActiveTab}
+            onAskAgent={handleAskAgent}
+            onSaveToDocuments={handleAddDocument}
+          />
+        )}
+
+        {activeTab === 'qa' && (
+          <QaTestPlanView
+            audit={audit}
+            onAskAgent={handleAskAgent}
+          />
+        )}
+
+        {activeTab === 'specs' && (
+          <EvolutiveSpecificationsView
+            audit={audit}
+            documents={documents}
+            onSaveToDocuments={handleAddDocument}
+            onAskAgent={handleAskAgent}
+          />
+        )}
+
+        {activeTab === 'analytics' && (
+          <HorizonsDataVisualizerView
+            audit={audit}
+            tickets={tickets}
+            onNavigateTab={setActiveTab}
+            onAskAgent={handleAskAgent}
+          />
+        )}
+
+        {activeTab === 'skills' && (
+          <SkillMarkdownBuilderView
+            audit={audit}
+            documents={documents}
+            onAskAgent={handleAskAgent}
+          />
+        )}
+
+        {activeTab === 'tickets' && (
+          <TicketsManagerView
+            audit={audit}
+            documents={documents}
+            onAskAgent={handleAskAgent}
+            tickets={tickets}
+            onUpdateTickets={setTickets}
+            onNavigateTab={setActiveTab}
           />
         )}
 
@@ -419,6 +534,8 @@ Connectez-vous avec Google pour persister vos dossiers dans **Firebase Firestore
             onDeleteDocument={handleDeleteDoc}
             onOpenUpload={() => setShowUploadModal(true)}
             onOpenSampleModal={() => setShowSampleModal(true)}
+            onUpdateDocument={handleUpdateDocument}
+            onCreateDocument={handleAddDocument}
           />
         )}
 
@@ -465,7 +582,16 @@ Connectez-vous avec Google pour persister vos dossiers dans **Firebase Firestore
         <SamplePacksModal
           onClose={() => setShowSampleModal(false)}
           onSelectPack={handleSelectPack}
+          onStartBlankProject={handleStartBlankProject}
           currentPackId={currentPackId}
+        />
+      )}
+
+      {showExportPdfModal && (
+        <ExportPdfModal
+          audit={audit}
+          documents={documents}
+          onClose={() => setShowExportPdfModal(false)}
         />
       )}
 

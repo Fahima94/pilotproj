@@ -5,12 +5,14 @@ import { FolderOpen, X, Check, ArrowRight, Layers, FileText } from 'lucide-react
 interface SamplePacksModalProps {
   onClose: () => void;
   onSelectPack: (pack: SampleProjectPack) => void;
+  onStartBlankProject?: () => void;
   currentPackId: string;
 }
 
 export const SamplePacksModal: React.FC<SamplePacksModalProps> = ({
   onClose,
   onSelectPack,
+  onStartBlankProject,
   currentPackId,
 }) => {
   return (
@@ -20,7 +22,7 @@ export const SamplePacksModal: React.FC<SamplePacksModalProps> = ({
           <div className="flex items-center space-x-2">
             <FolderOpen className="w-5 h-5 text-indigo-400" />
             <h3 className="font-bold text-white text-sm sm:text-base">
-              Charger un Dossier de Projet Type
+              Gestionnaire de Projet & Modèles Entreprise
             </h3>
           </div>
           <button
@@ -31,8 +33,30 @@ export const SamplePacksModal: React.FC<SamplePacksModalProps> = ({
           </button>
         </div>
 
+        {onStartBlankProject && (
+          <div className="p-3.5 rounded-xl bg-gradient-to-r from-indigo-950/60 to-blue-950/60 border border-indigo-500/40 flex items-center justify-between gap-3">
+            <div>
+              <div className="font-bold text-white text-xs sm:text-sm">
+                Démarrer un nouveau projet pour mon travail
+              </div>
+              <div className="text-[11px] text-slate-300">
+                Espace vierge pour importer directement vos propres cahiers des charges et documents réels.
+              </div>
+            </div>
+            <button
+              onClick={() => {
+                onStartBlankProject();
+                onClose();
+              }}
+              className="shrink-0 px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs shadow-md transition"
+            >
+              Nouveau projet vierge
+            </button>
+          </div>
+        )}
+
         <p className="text-xs text-slate-400 leading-relaxed">
-          Sélectionnez un pack de documents réalistes pour tester immédiatement les capacités d'analyse, de calcul de risques et de génération de livrables de l'Agent Chef de Projet.
+          Ou chargez un modèle de cadrage d'entreprise pré-configuré pour piloter votre initiative :
         </p>
 
         <div className="space-y-3">

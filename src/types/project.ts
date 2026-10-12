@@ -80,3 +80,60 @@ export interface SkillAction {
   prompt: string;
   artifactType?: 'charter' | 'raci' | 'risks' | 'flash_report' | 'agile_backlog' | 'wbs';
 }
+
+export interface TestCase {
+  id: string;
+  title: string;
+  category: 'Sécurité & RGPD' | 'Fonctionnel & Métier' | 'API & IA / Inférence' | 'Performance & Charge' | 'IHM & Ergonomie' | 'Intégration';
+  severity: 'Bloquant' | 'Majeur' | 'Mineur';
+  preconditions: string;
+  steps: string[];
+  expectedResult: string;
+  actualResult?: string;
+  status: 'Non exécuté' | 'Succès' | 'Échec' | 'En cours' | 'Bloqué';
+  tester: string;
+  executionDate?: string;
+  notes?: string;
+  defectDetails?: {
+    anomalyTitle: string;
+    description: string;
+    businessImpact: string;
+    workaround?: string;
+    releaseImpact: 'NO-GO' | 'GO conditionnel' | 'Accepté sous réserve';
+  };
+}
+
+export interface ChangeRequest {
+  id: string;
+  code: string;
+  title: string;
+  requester: string;
+  date: string;
+  description: string;
+  businessImpact: string;
+  costImpact: string;
+  status: 'Proposé' | 'Validé COPIL' | 'Rejeté' | 'En cours d\'implémentation';
+  scopeChange: 'In-Scope' | 'Out-of-Scope' | 'Règle métier modifiée';
+}
+
+export interface EvolutiveSpec {
+  version: string;
+  lastUpdated: string;
+  status: 'Brouillon' | 'En revue' | 'Validé COPIL' | 'Version de Référence';
+  contextVision: string;
+  inScope: string[];
+  outScope: string[];
+  functionalRequirements: {
+    id: string;
+    module: string;
+    description: string;
+    acceptanceCriteria: string;
+    priority: 'Must Have' | 'Should Have' | 'Could Have' | 'Won\'t Have';
+  }[];
+  nonFunctionalRequirements: {
+    category: string;
+    requirement: string;
+    targetMetric: string;
+  }[];
+  changeRequests: ChangeRequest[];
+}

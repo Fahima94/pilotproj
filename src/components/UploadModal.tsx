@@ -59,38 +59,38 @@ Date d'enregistrement : 28 Juillet 2026
 4. **Gestion des Quotas & Denial of Wallet** : Limiter la longueur des tokens, plafonner les appels et journaliser les coûts d'inférence.
 5. **Surveillance & Audit en Production** : Suivi des métriques de fiabilité, détection des dérives (drifts) et journalisation des erreurs de permissions.`);
     } else if (url.includes('leexi.ai')) {
-      setUrlTitle('Leexi — Compte-rendu de Réunion & Relevé de Décisions CDP');
+      setUrlTitle('Leexi — Compte-rendu de Réunion & Relevé de Décisions Stratégiques');
       setUrlType('cr_reunion');
-      setUrlNotes(`### COMPTE-RENDU DE RÉUNION LEEXI AI
+      setUrlNotes(`### COMPTE-RENDU DE RÉUNION & PLAN D'ACTIONS
 URL source : ${url}
-Type : Synthèse intelligente de réunion & Plan d'actions
+Type : Synthèse intelligente de réunion & Décisions d'équipe
 
 #### Résumé Exécutif de la Session :
-- Revue des jalons de formation et de cadrage projet pour la promotion CDP Paris.
-- Alignement sur l'usage des outils d'assistance IA et de pilotage documentaire.
-- Définition des critères d'évaluation des compétences de chef de projet (PMP / Agile).
+- Revue des jalons de cadrage et de livraison projet avec les parties prenantes.
+- Alignement sur l'usage des architectures d'automatisation et de pilotage documentaire.
+- Définition des critères d'acceptation, des priorités fonctionnelles et des indicateurs de succès (KPIs).
 
 #### Actions Décidées (Action Items) :
-- [ ] Valider l'architecture technique retenue (Lead Tech)
-- [ ] Finaliser la matrice des risques 5x5 et le registre de contingence (Chef de Projet)
-- [ ] Planifier le point de synchronisation hebdomadaire COPROJ.`);
+- [ ] Valider l'architecture technique et les flux d'intégration (Lead Architecte)
+- [ ] Finaliser la matrice des risques 5x5 et le plan d'atténuation (Chef de Projet)
+- [ ] Programmer le point de synchronisation hebdomadaire pour le rapport exécutif.`);
     } else if (url.includes('drive.google.com') || url.includes('drive.usercontent.google.com')) {
-      setUrlTitle('Google Drive — PBNC.26-06.CDP.Paris : Supabase & Vibe Coding (Théorie)');
+      setUrlTitle('Google Drive — Note de Cadrage Technique & Gouvernance');
       setUrlType('note_cadrage');
-      setUrlNotes(`### SUPPORT DE FORMATION GOOGLE DRIVE : PBNC.26-06.CDP.Paris
-Fichier : Supabase & Vibe Coding - initiation (Théorie) - 2026_08_18
+      setUrlNotes(`### DOCUMENT DE CADRAGE STRATÉGIQUE GOOGLE DRIVE
+Fichier : Note d'orientation technique & architecture logicielle
 URL source : ${url}
 
-#### Contenu & Objectifs Pédagogiques :
-1. **Architecture Supabase vs Firebase** :
-   - PostgreSQL relationnel, Row Level Security (RLS) et fonctions Edge.
-   - Comparaison avec les architectures NoSQL orientées documents.
-2. **Méthodologie du Vibe Coding & IA Générative** :
-   - Prototypage rapide d'applications complètes via des assistants de code IA.
-   - Importance cruciale du rôle du Chef de Projet pour cadrer le périmètre, éviter les régressions et garantir la robustesse.
-3. **Gouvernance & Bonnes Pratiques pour le Chef de Projet** :
-   - Spécifications précises pour guider les modèles de langage.
-   - Recette fonctionnelle continue et tests automatisés.`);
+#### Contenu & Piliers Opérationnels :
+1. **Architecture des Données & Résilience** :
+   - Base de données relationnelle sécurisée avec Row Level Security (RLS).
+   - Traçabilité et audit des flux d'intégration d'entreprise.
+2. **Méthodologie de Pilotage Accéléré & Intégration IA** :
+   - Conception itérative et cadrage rigoureux par le Chef de Projet.
+   - Prévention de la dette technique et gestion proactive du périmètre (Scope).
+3. **Gouvernance & Assurance Qualité** :
+   - Spécifications précises et critères d'acceptation formalisés.
+   - Recette fonctionnelle continue et tests d'intégration.`);
     }
   };
 

@@ -11,11 +11,14 @@ import {
   FolderOpen, 
   FileCode, 
   Copy, 
-  Check,
-  Tag,
-  Calendar,
-  Layers
+  Check, 
+  Tag, 
+  Calendar, 
+  Layers,
+  Edit3,
+  FilePlus2
 } from 'lucide-react';
+import { DocumentEditModal } from './DocumentEditModal';
 
 interface DocumentsManagerProps {
   documents: ProjectDocument[];
@@ -23,6 +26,8 @@ interface DocumentsManagerProps {
   onDeleteDocument: (id: string) => void;
   onOpenUpload: () => void;
   onOpenSampleModal: () => void;
+  onUpdateDocument?: (doc: ProjectDocument) => void;
+  onCreateDocument?: (doc: ProjectDocument) => void;
 }
 
 export const DocumentsManager: React.FC<DocumentsManagerProps> = ({
@@ -31,9 +36,13 @@ export const DocumentsManager: React.FC<DocumentsManagerProps> = ({
   onDeleteDocument,
   onOpenUpload,
   onOpenSampleModal,
+  onUpdateDocument,
+  onCreateDocument,
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [previewDoc, setPreviewDoc] = useState<ProjectDocument | null>(null);
+  const [editingDoc, setEditingDoc] = useState<ProjectDocument | null>(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [copied, setCopied] = useState(false);
 
   const filteredDocs = documents.filter(
@@ -49,6 +58,30 @@ export const DocumentsManager: React.FC<DocumentsManagerProps> = ({
     navigator.clipboard.writeText(previewDoc.content);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleOpenEdit = (doc: ProjectDocument) => {
+    setEditingDoc(doc);
+    setIsEditModalOpen(true);
+  };
+
+  const handleOpenCreate = () => {
+    setEditingDoc(null);
+    setIsEditModalOpen(true);
+  };
+
+  const handleSaveDocument = (doc: ProjectDocument) => {
+    if (editingDoc && onUpdateDocument) {
+      onUpdateDocument(doc);
+    } else if (!editingDoc && onCreateDocument) {
+      onCreateDocument(doc);
+    } else if (onUpdateDocument) {
+      onUpdateDocument(doc);
+    }
+    // Also update previewDoc if it's the one currently open
+    if (previewDoc && previewDoc.id === doc.id) {
+      setPreviewDoc(doc);
+    }
   };
 
   const getFormatBadge = (format: string) => {
@@ -79,7 +112,7 @@ export const DocumentsManager: React.FC<DocumentsManagerProps> = ({
           </p>
         </div>
 
-        <div className="flex items-center space-x-2">
+        <div className="flex flex-wrap items-center gap-2">
           <button
             onClick={onOpenSampleModal}
             className="px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 flex items-center space-x-1.5 transition"
@@ -89,11 +122,19 @@ export const DocumentsManager: React.FC<DocumentsManagerProps> = ({
           </button>
 
           <button
+            onClick={handleOpenCreate}
+            className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-indigo-300 border border-indigo-500/30 flex items-center space-x-1.5 transition"
+          >
+            <FilePlus2 className="w-3.5 h-3.5 text-indigo-400" />
+            <span>Créer document vierge</span>
+          </button>
+
+          <button
             onClick={onOpenUpload}
             className="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 text-white flex items-center space-x-1.5 shadow-sm transition"
           >
             <Plus className="w-3.5 h-3.5 text-white" />
-            <span>Ajouter / Importer document</span>
+            <span>Importer document / URL</span>
           </button>
         </div>
       </div>
@@ -112,7 +153,7 @@ export const DocumentsManager: React.FC<DocumentsManagerProps> = ({
         </div>
 
         <div className="text-xs text-slate-400 flex items-center space-x-2">
-          <span>Seuls les documents cochés sont injectés dans le prompt de l'Agent.</span>
+          <span>Seuls les documents cochés sont injectés dans le prompt de l'Agent. Vous pouvez modifier n'importe quel document à tout moment.</span>
         </div>
       </div>
 
@@ -122,15 +163,24 @@ export const DocumentsManager: React.FC<DocumentsManagerProps> = ({
           <FileText className="w-10 h-10 text-slate-600 mx-auto" />
           <h3 className="text-sm font-semibold text-white">Aucun document trouvé</h3>
           <p className="text-xs text-slate-400 max-w-sm mx-auto">
-            Importez vos cahiers des charges, comptes-rendus ou notes de cadrage pour alimenter l'Agent Chef de Projet.
+            Créez ou importez vos cahiers des charges, comptes-rendus ou notes de cadrage pour alimenter l'Agent Chef de Projet.
           </p>
-          <button
-            onClick={onOpenUpload}
-            className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-indigo-600 text-white hover:bg-indigo-500 transition"
-          >
-            <Plus className="w-3.5 h-3.5" />
-            <span>Ajouter mon premier document</span>
-          </button>
+          <div className="flex items-center justify-center gap-2 pt-2">
+            <button
+              onClick={handleOpenCreate}
+              className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-indigo-300 border border-slate-700 hover:bg-slate-700 transition"
+            >
+              <FilePlus2 className="w-3.5 h-3.5" />
+              <span>Créer un document</span>
+            </button>
+            <button
+              onClick={onOpenUpload}
+              className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-indigo-600 text-white hover:bg-indigo-500 transition"
+            >
+              <Plus className="w-3.5 h-3.5" />
+              <span>Importer un fichier</span>
+            </button>
+          </div>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -181,15 +231,22 @@ export const DocumentsManager: React.FC<DocumentsManagerProps> = ({
 
                   <div className="flex items-center space-x-1">
                     <button
+                      onClick={() => handleOpenEdit(doc)}
+                      className="p-1.5 rounded text-indigo-400 hover:text-white hover:bg-slate-800 transition"
+                      title="Modifier le document (Édition)"
+                    >
+                      <Edit3 className="w-3.5 h-3.5" />
+                    </button>
+                    <button
                       onClick={() => setPreviewDoc(doc)}
-                      className="p-1 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition"
+                      className="p-1.5 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition"
                       title="Lire le document"
                     >
                       <Eye className="w-3.5 h-3.5" />
                     </button>
                     <button
                       onClick={() => onDeleteDocument(doc.id)}
-                      className="p-1 rounded text-slate-400 hover:text-rose-400 hover:bg-slate-800 transition"
+                      className="p-1.5 rounded text-slate-400 hover:text-rose-400 hover:bg-slate-800 transition"
                       title="Supprimer"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
@@ -214,6 +271,17 @@ export const DocumentsManager: React.FC<DocumentsManagerProps> = ({
                 </h3>
               </div>
               <div className="flex items-center space-x-2">
+                <button
+                  onClick={() => {
+                    const d = previewDoc;
+                    setPreviewDoc(null);
+                    handleOpenEdit(d);
+                  }}
+                  className="px-2.5 py-1 rounded-md text-xs bg-indigo-600/20 text-indigo-300 border border-indigo-500/30 hover:bg-indigo-600/30 flex items-center space-x-1"
+                >
+                  <Edit3 className="w-3.5 h-3.5" />
+                  <span>Modifier</span>
+                </button>
                 <button
                   onClick={handleCopyPreview}
                   className="px-2.5 py-1 rounded-md text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center space-x-1"
@@ -240,6 +308,14 @@ export const DocumentsManager: React.FC<DocumentsManagerProps> = ({
           </div>
         </div>
       )}
+
+      {/* Document Edit Modal */}
+      <DocumentEditModal
+        isOpen={isEditModalOpen}
+        document={editingDoc}
+        onClose={() => setIsEditModalOpen(false)}
+        onSave={handleSaveDocument}
+      />
     </div>
   );
 };

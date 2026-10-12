@@ -17,7 +17,14 @@ import {
   User,
   Cloud,
   Mic,
-  Presentation
+  Presentation,
+  FileDown,
+  CheckSquare,
+  FileCode,
+  ShieldCheck,
+  Award,
+  BookOpen,
+  BarChart3
 } from 'lucide-react';
 import { ProjectAudit } from '../types/project';
 import { User as FirebaseUser } from 'firebase/auth';
@@ -38,6 +45,7 @@ interface NavbarProps {
   onLogout: () => void;
   isLoggingIn: boolean;
   isSavingFirestore?: boolean;
+  onOpenExportPdf?: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -56,6 +64,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   onLogout,
   isLoggingIn,
   isSavingFirestore = false,
+  onOpenExportPdf,
 }) => {
   const getStatusColor = (status?: string) => {
     switch (status) {
@@ -72,8 +81,14 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   const navItems = [
     { id: 'dashboard', label: 'Vue d’ensemble', icon: LayoutDashboard },
+    { id: 'analytics', label: 'Vélocité & Burn-down', icon: BarChart3, badge: 'HorizonsDatas' },
+    { id: 'control', label: 'Tour de Contrôle 360°', icon: ShieldCheck, badge: 'Sécu & RGPD' },
+    { id: 'qa', label: 'Plan de Tests & QA', icon: Award, badge: 'GO / NO-GO' },
+    { id: 'specs', label: 'Cahier des Charges', icon: BookOpen, badge: 'Évolutif' },
+    { id: 'tickets', label: 'Gestion au Ticket', icon: CheckSquare, badge: 'INVEST' },
+    { id: 'skills', label: 'Rédacteur SKILL.md', icon: FileCode, badge: 'Agent IA' },
     { id: 'slides', label: 'Studio Slides', icon: Presentation, badge: 'COPIL' },
-    { id: 'chat', label: 'Chatbot Gemini', icon: BotMessageSquare, badge: 'Multi-turn' },
+    { id: 'chat', label: 'Co-pilot Gemini', icon: BotMessageSquare, badge: 'Multi-turn' },
     { id: 'science', label: 'Science Skills', icon: Atom, badge: 'R&D' },
     { id: 'documents', label: 'Documents Projet', icon: FileText, count: activeDocCount },
     { id: 'milestones', label: 'Planning & Jalons', icon: CalendarClock },
@@ -182,13 +197,24 @@ export const Navbar: React.FC<NavbarProps> = ({
               <span>Enregistrer Meet</span>
             </button>
 
+            {onOpenExportPdf && (
+              <button
+                onClick={onOpenExportPdf}
+                className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-indigo-600/20 hover:bg-indigo-600/30 text-indigo-200 border border-indigo-500/40 shadow-sm transition"
+                title="Exporter le tableau de bord et les indicateurs au format PDF"
+              >
+                <FileDown className="w-3.5 h-3.5 text-indigo-400" />
+                <span>Exporter PDF</span>
+              </button>
+            )}
+
             <button
               onClick={onOpenSampleModal}
               className="hidden sm:inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition"
-              title="Charger un dossier exemple (E-Commerce, RH, Biotech R&D)"
+              title="Charger un modèle de projet d'entreprise ou créer un projet vierge"
             >
               <FolderOpen className="w-3.5 h-3.5 text-slate-400" />
-              <span>Dossiers types</span>
+              <span>Modèles Projet</span>
             </button>
 
             <button

@@ -16,7 +16,9 @@ import {
   ShieldAlert, 
   CalendarClock,
   Layers,
-  HelpCircle
+  HelpCircle,
+  FileDown,
+  BarChart3
 } from 'lucide-react';
 
 interface DashboardViewProps {
@@ -25,6 +27,7 @@ interface DashboardViewProps {
   onNavigateTab: (tab: string) => void;
   onOpenArtifact: (type: 'charter' | 'raci' | 'risks' | 'flash_report' | 'agile_backlog' | 'wbs') => void;
   onAskAgent: (prompt: string) => void;
+  onOpenExportPdf?: () => void;
 }
 
 export const DashboardView: React.FC<DashboardViewProps> = ({
@@ -33,6 +36,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   onNavigateTab,
   onOpenArtifact,
   onAskAgent,
+  onOpenExportPdf,
 }) => {
   const activeDocs = documents.filter((d) => d.active);
 
@@ -85,6 +89,16 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 <FileText className="w-3.5 h-3.5 text-indigo-400" />
                 <span>{activeDocs.length} doc{activeDocs.length > 1 ? 's' : ''} analysé{activeDocs.length > 1 ? 's' : ''}</span>
               </span>
+              {onOpenExportPdf && (
+                <button
+                  onClick={onOpenExportPdf}
+                  className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 text-white shadow-md shadow-indigo-600/20 transition cursor-pointer"
+                  title="Exporter le tableau de bord actuel (indicateurs clés & risques) au format PDF pour les parties prenantes"
+                >
+                  <FileDown className="w-3.5 h-3.5" />
+                  <span>Exporter le Tableau de Bord en PDF</span>
+                </button>
+              )}
             </div>
 
             <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
@@ -163,12 +177,30 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             </div>
 
             <button
+              onClick={() => onNavigateTab('analytics')}
+              className="w-full py-2 px-3 rounded-lg text-xs font-semibold bg-gradient-to-r from-cyan-600 via-indigo-600 to-purple-600 hover:from-cyan-500 text-white shadow-md shadow-cyan-600/20 flex items-center justify-center space-x-1.5 transition active:scale-95"
+            >
+              <BarChart3 className="w-3.5 h-3.5 text-cyan-200" />
+              <span>Burn-down & Vélocité (HorizonsDatas)</span>
+            </button>
+
+            <button
               onClick={() => onNavigateTab('slides')}
               className="w-full py-2 px-3 rounded-lg text-xs font-semibold bg-gradient-to-r from-indigo-600 via-blue-600 to-cyan-500 hover:from-indigo-500 text-white shadow-md shadow-indigo-600/20 flex items-center justify-center space-x-1.5 transition"
             >
               <span>Préparer les Slides COPIL (Diaporama)</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
+
+            {onOpenExportPdf && (
+              <button
+                onClick={onOpenExportPdf}
+                className="w-full py-2 px-3 rounded-lg text-xs font-semibold bg-indigo-600/20 hover:bg-indigo-600/30 text-indigo-200 border border-indigo-500/40 flex items-center justify-center space-x-1.5 transition"
+              >
+                <FileDown className="w-3.5 h-3.5 text-indigo-400" />
+                <span>Exporter Rapport PDF (Parties Prenantes)</span>
+              </button>
+            )}
 
             <button
               onClick={() => onNavigateTab('chat')}
