@@ -1,0 +1,6 @@
+{
+  "name": "Chef de Projet Drive Agent",
+  "description": "Assistant chef de projet intelligent connecté à Google Drive pour analyser vos documents, piloter vos projets et générer des livrables.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,84 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Profil utilisateur authentifié",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "maxLength": 128 },
+        "email": { "type": "string", "maxLength": 256 },
+        "displayName": { "type": "string", "maxLength": 128 },
+        "photoURL": { "type": "string", "maxLength": 512 },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["uid", "email"]
+    },
+    "Project": {
+      "title": "Project",
+      "description": "Projet géré par l'utilisateur",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "title": { "type": "string", "maxLength": 256 },
+        "executiveSummary": { "type": "string", "maxLength": 5000 },
+        "projectStatus": { "type": "string", "enum": ["VERT", "JAUNE", "ROUGE"] },
+        "statusJustification": { "type": "string", "maxLength": 1000 },
+        "estimatedDuration": { "type": "string", "maxLength": 128 },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "userId", "title"]
+    },
+    "ProjectDocument": {
+      "title": "ProjectDocument",
+      "description": "Document attaché à un projet",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "projectId": { "type": "string", "maxLength": 128 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "name": { "type": "string", "maxLength": 256 },
+        "type": { "type": "string", "maxLength": 64 },
+        "fileFormat": { "type": "string", "maxLength": 64 },
+        "size": { "type": "string", "maxLength": 64 },
+        "content": { "type": "string", "maxLength": 50000 },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "userId", "name", "content"]
+    },
+    "ChatMessage": {
+      "title": "ChatMessage",
+      "description": "Message de conversation dans le thread du projet",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "projectId": { "type": "string", "maxLength": 128 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "role": { "type": "string", "enum": ["user", "assistant"] },
+        "content": { "type": "string", "maxLength": 25000 },
+        "roleType": { "type": "string", "maxLength": 64 },
+        "timestamp": { "type": "string" }
+      },
+      "required": ["id", "userId", "role", "content"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserProfile" },
+      "description": "Informations publiques et privées du compte utilisateur"
+    },
+    "/projects/{projectId}": {
+      "schema": { "$ref": "#/entities/Project" },
+      "description": "Dossiers de projets créés ou importés par l'utilisateur"
+    },
+    "/projects/{projectId}/documents/{documentId}": {
+      "schema": { "$ref": "#/entities/ProjectDocument" },
+      "description": "Documents textuels attachés à un projet"
+    },
+    "/projects/{projectId}/messages/{messageId}": {
+      "schema": { "$ref": "#/entities/ChatMessage" },
+      "description": "Historique des échanges avec le chatbot pour ce projet"
+    }
+  }
+}
