@@ -113,3 +113,13 @@ npm start
 
 ## 📄 Licence
 Sous licence Apache-2.0. Développé pour le pilotage de projets innovants avec Google AI Studio.
+
+---
+
+<div align="center">
+
+**Fahima Behillil** · Cheffe de projet IA & Automatisation · *Business Tech Bridge*
+
+[LinkedIn](https://www.linkedin.com/in/fahima-be/) · [Prendre RDV (Horizons Datas)](https://calendly.com/horizonsdatas/30min) · [Tous mes projets](https://github.com/Fahima94)
+
+</div>
